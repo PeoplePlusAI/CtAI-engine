@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logout Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-family: "Inter", sans-serif;
+            text-align: center;
+        }
+        .message {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+        .timer {
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .subtext {
+            color: #007BFF;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-r from-blue-100 to-purple-100 min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div class="message">You have been successfully logged out.</div>
+    <div class="timer">Redirecting to login page in <span id="countdown">10</span> seconds...</div>
+    <div class="subtext" onclick="redirectToLogin()">Click here if you don't want to wait</div>
+
+    <script>
+        let countdown = 10;
+        const countdownElement = document.getElementById("countdown");
+
+        const timer = setInterval(() => {
+            countdown--;
+            countdownElement.textContent = countdown;
+            if (countdown <= 0) {
+                clearInterval(timer);
+                redirectToLogin();
+            }
+        }, 1000);
+
+        function redirectToLogin() {
+            window.location.href = "/accounts/login"; // Replace with your login page URL
+        }
+    </script>
+    
+</body>
+</html>
