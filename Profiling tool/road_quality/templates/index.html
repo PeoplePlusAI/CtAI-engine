@@ -1,0 +1,422 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Road Image Upload with Coordinates</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: "Inter", sans-serif;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+    <style type="text/css">
+      @font-face{
+          font-family:"helvetica";
+          src:url("https://candyfonts.com/wp-data/2018/10/26/11538/HELR45W.ttf") format("woff"),
+          url("https://candyfonts.com/wp-data/2018/10/26/11538/HELR45W.ttf") format("opentype"),
+          url("https://candyfonts.com/wp-data/2018/10/26/11538/HELR45W.ttf") format("truetype");
+      }
+      
+      </style>
+  </head>
+
+<body class="bg-gradient-to-r from-blue-100 to-purple-100 flex flex-col">
+  <div class="flex flex-row space-x-4" style="align-self: end; margin: 15px;">
+    <a href="https://docs.google.com/document/d/12DbqzrQ8R6EgINSATSYijrF21379UDTzP59ShVc7jH4/edit?tab=t.0#heading=h.d49mpdvjb7xv" target="_blank">
+      <button
+        class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-150 ease-in-out">
+        Check the Guide
+      </button>
+      </a>
+    <a href="https://ctai.pplus.ai/visualization/" target="_blank">
+      <button
+        class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-150 ease-in-out">
+        Map
+      </button>
+      </a>
+      <form action="{% url 'logout' %}" method="post" >
+        {% csrf_token %}
+        
+        <button type="submit"
+          class="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition duration-150 ease-in-out">
+          Logout
+        </button>
+        
+      </form>
+  </div>
+
+  
+
+  <!-- logout button -->
+  <div class="min-h-screen flex items-center justify-center p-4 flex-col">  
+
+    <!-- {% if is_authorized %} -->
+    <div class="bg-white rounded-lg shadow-xl p-6 max-w-3xl w-full md:p-8">
+      <div class="max-w-md mx-auto">
+      <Image
+      src="{% static 'peopleplusai.png' %}"
+      alt="Logo"
+      width={30}
+      height={30}
+      
+    /></div>
+    <p class="text-5xl font-bold my-8 text-center" style="font-family: helvetica; color:#1a9988">
+      City AI Engine
+    </p>
+      <div id="maindiv">
+        <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">
+          Click Your Foothpath Picture
+        </h1>
+        <form id="uploadForm" class="space-y-4">
+          {% csrf_token %}
+          <div>
+            <!-- <label
+              for="image"
+              class="block text-sm font-bold text-gray-700 mb-1"
+              >Upload Image</label
+            > -->
+          <input type="file" id="image" name="image" accept="image/*" style="display: none;"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          <!-- <h1 class="text-xl mt-4 font-bold text-center text-gray-800">
+              OR
+            </h1> -->
+          <label for="image" class="block text-sm font-bold text-gray-700">Click Photo</label>
+          <input type="file" id="image-camera" name="image-camera" accept="image/*" capture="environment"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 mb-2" />
+        </div>
+        <img id="imagePreview" alt="Image preview" style="display: none;" class="mb-6">
+        <button type="submit"
+          class="w-full bg-blue-600 text-2xl font-bold md:text-xl text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-150 ease-in-out">
+          Submit
+        </button>
+      </form>
+      <div id="loading" class="hidden mt-4 text-center">
+        <div class="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
+        <p class="mt-2 text-gray-600">Processing...</p>
+      </div>
+      <div id="response2" class="bg-white rounded-lg shadow-xl p-8 max-w-2xl w-full hidden">
+        <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">
+          API Response
+        </h1>
+        <div class="space-y-6">
+          <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <h2 class="text-xl font-semibold mb-2 text-blue-800">
+              Image Information
+            </h2>
+            <p class="text-gray-700">
+              <span class="font-semibold">Filename:</span>
+              <span id="filename"></span>
+            </p>
+            <div class="mt-2 flex space-x-4">
+              <p class="text-gray-700">
+                <span class="font-semibold">Latitude:</span>
+                <span id="latitude-response"></span>
+              </p>
+              <p class="text-gray-700">
+                <span class="font-semibold">Longitude:</span>
+                <span id="longitude-response"></span>
+              </p>
+            </div>
+          </div>
+
+          <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+            <h2 class="text-xl font-semibold mb-2 text-green-800">
+              Analysis Result
+            </h2>
+            <p class="text-gray-700">
+            <div class="relative h-8 bg-gray-200 rounded-full overflow-hidden">
+              <div id="score-fill"
+                class="absolute top-0 left-0 h-full bg-gradient-to-r from-red-500 via-yellow-500 to-green-500 transition-all duration-300 ease-in-out">
+              </div>
+              <div class="absolute top-0 left-0 w-full h-full flex justify-between items-center px-1">
+
+              </div>
+            </div>
+            <div class="flex justify-between mt-2 text-sm text-gray-600">
+              <span>0</span>
+              <span>1</span>
+              <span>2</span>
+              <span>3</span>
+              <span>4</span>
+              <span>5</span>
+            </div>
+            <p id="score-display" class="text-center mt-4 text-lg font-semibold">Walkability Score: 0.0</p>
+            <span id="response-level" class="text-lg font-bold"></span>
+            </p>
+          </div>
+
+          <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+            <h2 class="text-xl font-semibold mb-2 text-yellow-800">
+              What went wrong?
+            </h2>
+            <p id="negative-components" class="text-gray-700"></p>
+          </div>
+
+          <div class="bg-purple-50 border border-purple-200 rounded-lg p-4">
+            <h2 class="text-xl font-semibold mb-2 text-purple-800">
+              Actionable Recommendations
+            </h2>
+            <p id="actionable-recommendations" class="text-gray-700"></p>
+          </div>
+        </div>
+      </div>
+      <div id="response" class="mt-6 p-4 bg-gray-100 rounded-md hidden">
+        <h2 class="text-lg font-semibold mb-2 text-gray-800">
+          Response from server:
+        </h2>
+        <pre id="jsonResponse" class="whitespace-pre-wrap break-words text-sm"></pre>
+      </div>
+    </div>
+    <div>
+      <h1 class="text-3xl font-bold mb-6 text-center text-gray-800 mt-10">
+        Image Upload History
+      </h1>
+      <div id="image-list">
+        {% for image in user_history_images %}
+        <a class="w-full bg-white rounded-lg shadow-md overflow-hidden flex flex-col sm:flex-row mb-4 border-2"
+          href="{{site_url}}/response/{{image.id}}">
+          <div class="p-6 flex flex-row justify-between items-center w-full">
+            <!-- <h2 class="text-md font-semibold text-gray-800 md:text-xl">Image ID: {{ image.id}}</h2> -->
+            <h2 class="text-md font-semibold text-gray-800 md:text-xl">Time: {{ image.timestamp}}</h2>
+            <h2 class="text-md font-semibold text-gray-800 md:text-xl">Score: {{ image.overall_score}}</h2>
+            <!-- <button class=" px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition duration-300 ">Explore</button> -->
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+    <div id="permissionDeniedDiv" class="hidden">
+      <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">
+        Please follow this.
+      </h1>
+      <p class="text-center text-red-500">
+      <ul>
+        <!-- <li>Please provide location permission</li> -->
+        <li>Please click on always allow location access.</li>
+        <li>Reload the page if error persists</li>
+      </ul>
+      </p>
+    </div>
+    <div id="errordiv" class="hidden">
+      <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">
+        Please follow this.
+      </h1>
+      <p class="text-center text-red-500">
+        This browser does not support geolocation. Please use a different browser preferabley chrome.
+      </p>
+    </div>
+    </div>
+  </div>
+
+
+  <script>
+    function addNewImage(imageData) {
+      const container = document.getElementById("image-list");
+      console.log("cont",container)
+      
+      // Create the new image element
+      const newImageElement = document.createElement('a');
+      newImageElement.className = "w-full bg-white rounded-lg shadow-md overflow-hidden flex flex-col sm:flex-row mb-4 border-2";
+      newImageElement.href = `/response/${imageData.id}`;
+      
+      const innerDiv = document.createElement('div');
+      innerDiv.className = "p-6 flex flex-row justify-between items-center w-full";
+
+      // Add time
+      const timeElement = document.createElement('h2');
+      timeElement.className = "text-md font-semibold text-gray-800 md:text-xl";
+      timeElement.textContent = `Time: ${imageData.timestamp}`;
+      
+      // Add score
+      const scoreElement = document.createElement('h2');
+      scoreElement.className = "text-md font-semibold text-gray-800 md:text-xl";
+      scoreElement.textContent = `Score: ${imageData.response}`;
+
+      // Append elements
+      innerDiv.appendChild(timeElement);
+      innerDiv.appendChild(scoreElement);
+      newImageElement.appendChild(innerDiv);
+      container.prepend(newImageElement); // Adds the new image at the top
+    }
+
+    const fileInput = document.getElementById('image');
+    const fileInputCamera = document.getElementById('image-camera');
+    const imagePreview = document.getElementById('imagePreview');
+
+    fileInput.addEventListener('change', function (e) {
+      const file = e.target.files[0];
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          imagePreview.src = e.target.result;
+          imagePreview.style.display = 'block';
+        }
+        reader.readAsDataURL(file);
+        document.getElementById("image-camera").value = "";
+      }
+
+    });
+
+    fileInputCamera.addEventListener('change', function (e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          imagePreview.src = e.target.result;
+          imagePreview.style.display = 'block';
+        }
+        reader.readAsDataURL(file);
+        document.getElementById("image").value = "";
+      }
+    });
+    function updateScore(score) {
+      // Ensure the score is between 0 and 5
+      const clampedScore = Math.max(0, Math.min(5, score));
+
+      // Calculate the width of the filled portion of the bar
+      const fillWidth = (clampedScore / 5) * 100;
+
+      // Update the width of the score fill
+      document.getElementById('score-fill').style.width = `${fillWidth}%`;
+
+      // Update the score display
+      document.getElementById('score-display').textContent = `Score: ${clampedScore.toFixed(0)}`;
+    }
+    function populateResponse(data) {
+      document.getElementById("filename").textContent = data.filename;
+      document.getElementById("latitude-response").textContent =
+        data.latitude;
+      document.getElementById("longitude-response").textContent =
+        data.longitude;
+      // document.getElementById("response-level").textContent = data.response;
+      updateScore(data.response);
+      document.getElementById("negative-components").textContent =
+        data.negative_components;
+      document.getElementById("actionable-recommendations").textContent =
+        data.actionable_recommendations;
+      
+    }
+
+    let deviceInfo, geolocation;
+
+    function getDeviceInfo() {
+      const deviceInfo = {
+        platform: navigator.platform,
+        userAgent: navigator.userAgent,
+        language: navigator.language,
+        deviceMemory: navigator.deviceMemory || "Unknown",
+        hardwareConcurrency: navigator.hardwareConcurrency || "Unknown",
+      };
+      return deviceInfo;
+    }
+
+    // Function to get user location and send data to API
+    function getUserInfo() {
+      // Check if Geolocation is supported
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            geolocation = position;
+            deviceInfo = getDeviceInfo();
+          },
+          (error) => {
+            if (error.code === error.PERMISSION_DENIED) {
+              console.warn("User denied the request for Geolocation.");
+              document.getElementById("permissionDeniedDiv").classList.remove("hidden");
+              document.getElementById("maindiv").classList.add("hidden");
+            } else {
+              console.error("Error getting location:", error.message);
+            }
+          }
+        );
+      } else {
+        console.error("Geolocation is not supported by this browser.");
+        document.getElementById("errordiv").classList.remove("hidden");
+        document.getElementById("maindiv").classList.add("hidden");
+      }
+    }
+
+    // Call the function when the page loads
+    window.onload = getUserInfo;
+
+    document
+      .getElementById("uploadForm")
+      .addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        getUserInfo();
+        //check if either image or image-camera is uploaded
+        if (!document.getElementById("image").files[0] && !document.getElementById("image-camera").files[0]) {
+          alert("Please upload an image");
+        } else {
+          const formData = new FormData();
+          if (document.getElementById("image").files[0]) {
+            formData.append("file", document.getElementById("image").files[0]);
+          } else if (document.getElementById("image-camera").files[0]) {
+            formData.append("file", document.getElementById("image-camera").files[0]);
+          }
+          formData.append("lat", geolocation?.coords?.latitude);
+          formData.append("long", geolocation?.coords?.longitude);
+          formData.append("deviceInfo", JSON.stringify(deviceInfo));
+          formData.append("geolocation", JSON.stringify(geolocation));
+
+          document.getElementById("loading").classList.remove("hidden");
+          document.getElementById("response").classList.add("hidden");
+
+          try {
+            const response = await fetch("/", {
+              method: "POST",
+              body: formData,
+            });
+
+            const data = await response.json();
+            // document.getElementById("jsonResponse").textContent =
+            //   JSON.stringify(data, null, 2);
+            // document.getElementById("response").classList.remove("hidden");
+            populateResponse(data);
+            addNewImage(data)
+          } catch (error) {
+            console.error("Error:", error);
+            document.getElementById("jsonResponse").textContent =
+              "Error: " + error.message;
+            document.getElementById("response").classList.remove("hidden");
+          } finally {
+            document.getElementById("loading").classList.add("hidden");
+            document.getElementById("response2").classList.remove("hidden");
+            // document.getElementById("response").classList.remove("hidden");
+          }
+        }
+      });
+  </script>
+  {% else %}
+    <div class="bg-white rounded-lg shadow-xl p-8 max-w-3xl w-full">
+      <Image
+      src="{% static 'PeopleAI_logo.svg' %}"
+      alt="Logo"
+      width={50}
+      height={50}
+    />
+      <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">
+        You are not authorized
+      </h1>
+    </div>
+    {% endif %}
+</body>
+
+</html>
