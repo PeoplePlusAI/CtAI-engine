@@ -1,4 +1,4 @@
-This folder contains documnetation regarding the files which aims to develop an Artificial Intelligence (AI) system for city-scale applications. 
+This folder contains documentation regarding the files which aims to develop an Artificial Intelligence (AI) system for city-scale applications. 
 The system will utilize machine learning algorithms toanalyze and process large datasets, providing insights and recommendations for urban planning and management.
 
 Table of Contents:
@@ -14,6 +14,10 @@ This document identifies the problem and need for the City AI Engine, highlighti
 
 doc_street_light.pdf
 This document provides a detailed description of how streetlights are plotted on a map from tabular data. It outlines the process of data preparation, data cleaning, map plotting, and visualization, providing a clear representation of streetlight locations on a map.
+
+
+
+
 
 
 
