@@ -1,0 +1,167 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City AI Engine</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 100vh;
+            width: 100%;
+            z-index: 1;
+        }
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+        #header {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            font-size: 1.2em;
+            z-index: 1000;
+        }
+        #legend {
+            position: absolute;
+            bottom: 30px;
+            left: 10px;
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            font-family: Arial, sans-serif;
+            z-index: 1000;
+        }
+        .legend-item {
+            margin-bottom: 5px;
+        }
+        .legend-color {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div id="header"><strong>City AI</strong></div>
+    <div id="legend">
+        <div class="legend-item">
+            <div class="legend-color" style="background-color: #bd0026;"></div> Walkability Score: 1 (Very Poor)
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background-color: #f03b20;"></div> Walkability Score: 2 (Poor)
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background-color: #fd8d3c;"></div> Walkability Score: 3 (Moderate)
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background-color: #c0fe4c;"></div> Walkability Score: 4 (Good)
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background-color: #00ff00;"></div> Walkability Score: 5 (Excellent)
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // Initialize the map and set its view to Bengaluru
+        var map = L.map('map').setView([12.9716, 77.5946], 13);
+
+        // Add a tile layer from OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+
+        // Function to convert JSON to GeoJSON
+        function convertToGeoJSON(data) {
+            return {
+                "type": "FeatureCollection",
+                "features": data.map(item => ({
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [parseFloat(item.longitude), parseFloat(item.latitude)]
+                    },
+                    "properties": {
+                        "id": item.id,
+                        "road_image_filename": item.road_image_filename,
+                        "road_image_url": `https://ctai.pplus.ai${item.road_image_url}`,
+                        "overall_score": item.overall_score,
+                        "negative_components": item.negative_components,
+                        "actionable_recommendations": item.actionable_recommendations
+                    }
+                }))
+            };
+        }
+
+        // Function to fetch and add GeoJSON data to the map
+        async function fetchRoadData() {
+            try {
+                const roadData = JSON.parse('{{ image_objects|escapejs }}');
+                const geoJsonData = convertToGeoJSON(roadData);
+                function getColor(score) {
+                    if(score==4){
+                        console.log("444")
+                    }
+                    switch (score) {
+                        case 1:
+                            return "#bd0026";
+                        case 2:
+                            return "#f03b20";
+                        case 3:
+                            return "#fd8d3c";
+                        case 4:
+                            return "#c0fe4c";
+                        case 5:
+                            return "#00ff00";
+                        default:
+                            return "gray"; // fallback for undefined scores
+                    }
+                }
+
+                const geoJsonLayer = L.geoJSON(geoJsonData, {
+                    pointToLayer: function (feature, latlng) {
+                        return L.circleMarker(latlng, {
+                            radius: 8, // Size of the marker
+                            fillColor: getColor(feature.properties.overall_score), // Marker color
+                            color: "#000", // Border color
+                            weight: 1,
+                            opacity: 1,
+                            fillOpacity: 0.8
+                        });
+                    },
+                    onEachFeature: function (feature, layer) {
+                        layer.bindPopup(`
+                            <b>ID:</b> ${feature.properties.id}<br>
+                            <b>Overall Score:</b> ${feature.properties.overall_score}<br>
+                            <b>Issues:</b> ${feature.properties.negative_components}<br>
+                            <b>Recommendations:</b> ${feature.properties.actionable_recommendations}<br>
+                            <img src="${feature.properties.road_image_url}" alt="Road Image" width="200">
+                        `);
+                    }
+                }).addTo(map);
+                map.fitBounds(geoJsonLayer.getBounds());
+            } catch (error) {
+                console.error('Error fetching road data:', error);
+            }
+        }
+
+        // Fetch road data on load
+        fetchRoadData();
+    </script>
+</body>
+</html>

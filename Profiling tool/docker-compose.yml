@@ -1,0 +1,26 @@
+services:
+  web:
+    build: .
+    command: bash scripts/run.sh
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./db_data:/app/db_data  # Persist the SQLite database
+      - ./uploads:/app/uploads  # Persist the uploads directory
+    environment:
+      - DJANGO_SETTINGS_MODULE=cityAiBackend.settings
+      - DB_HOST=db
+      - DB_NAME=ctai
+      - DB_USER=ctai
+      - DB_PASS=$DB_PASSWORD
+  db:
+    image: postgres:13-alpine
+    restart: always
+    environment:
+      - POSTGRES_DB=ctai
+      - POSTGRES_USER=ctai
+      - POSTGRES_PASSWORD=$DB_PASSWORD
+    volumes:
+      - ./psql_data:/var/lib/postgresql/data
+

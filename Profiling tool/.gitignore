@@ -1,0 +1,39 @@
+# Django-specific files
+*.sqlite3
+*.db
+db.sqlite3
+local_settings.py
+psql_data/
+# Virtual environment
+venv/
+env/
+
+# Build files
+dist/
+build/
+
+# Test files
+*.pyc
+*.pyo
+__pycache__/
+tests/
+
+# IDE files
+.idea/
+.vscode/
+
+# Logs
+logs/
+
+# Media files (if not managed by a separate tool)
+media/
+
+# Other common files
+*.pyc
+*.pyo
+__pycache__/
+*.swp
+.DS_Store
+
+.env
+uploads/*
