@@ -11,7 +11,8 @@ City AI Engine is an app helps analyze the quality of footpaths and provides act
    git clone https://github.com/ArpitSureka/cityAiBackend.git
    ```
 2. Create a virtual environment and enter inside the virtual environment. The recommended Python version is Python 3.10
-4. Inside the virtual environment install all dependencies using the command `pip install -r requirements.txt`
+4. Inside the virtual environment install all dependencies using the command
+   ```pip install -r requirements.txt```
 
 ## Creating the Environment Variables
 Create an `.env` file and follow the variable name based on `.env.example` and follow the given steps.
@@ -44,7 +45,7 @@ To generate Google Client ID and API key for social authentication, follow these
  - Copy and save the generated API key
 
 ## Starting the server
-- Start the Django Server using the command `python manage.py runserv localhost:8000`
+- Start the Django Server using the command ```python manage.py runserv localhost:8000```
 - Open local host:8000 on your browser to check the website
 
 
