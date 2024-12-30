@@ -49,7 +49,7 @@ To generate Google Client ID and API key for social authentication, follow these
 ## Starting the server
 - Start the Django Server using the command
   ```
-  python manage.py runserv localhost:8000
+  python manage.py runserver localhost:8000
   ```
 - Open local host:8000 on your browser to check the website
 
