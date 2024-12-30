@@ -8,7 +8,7 @@ City AI Engine is an app helps analyze the quality of footpaths and provides act
 
 1. Clone the repository
    ```
-   https://github.com/ArpitSureka/cityAiBackend.git
+   git clone https://github.com/ArpitSureka/cityAiBackend.git
    ```
 2. Create a virtual environment and enter inside the virtual environment. The recommended Python version is Python 3.10
 4. Inside the virtual environment install all dependencies using the command `pip install -r requirements.txt`
