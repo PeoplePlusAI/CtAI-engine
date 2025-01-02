@@ -1,6 +1,6 @@
-# Project Name
+# City AI Engine
 
-Edit this section with a brief explanation of your project.
+City AI Engine is a project aimed at harnessing AI to create digital twins of cities
 
 ## Table of Contents
 
