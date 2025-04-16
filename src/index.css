@@ -1,0 +1,435 @@
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+}
+
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+
+/* ----------------------Cityindex-------------------- */
+.backgroundContainer {
+  height: 100vh;
+  width: 100%;
+  background-color: #E7F1F3;
+  position: relative;
+  overflow: auto;
+  z-index: 1;
+}
+
+.topImg {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 20%;
+  z-index: -1;
+}
+
+.bottomImg {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 18%;
+  z-index: -1;
+}
+.brandImage {
+  width: 100%; 
+  min-width: 100px; 
+  max-width: 400px; 
+  height: auto; 
+}
+
+.title {
+  color: #1A9988;
+  font-size: clamp(1.4rem, 2vw, 2rem);
+  font-family: "Helvetica LT Std", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.textFootpath {
+  color: #1E1E2D;
+  font-family: "Inter, sans-serif";
+  font-size: clamp(0.9rem, 2vw, 1.4rem);
+  font-style: normal;
+  font-weight: 500;
+}
+
+.footpathBoxg {
+  border-radius: 8px;
+  border: none;
+  background: #E7F1F3;
+  box-shadow: 0px 4.993px 31.205px 0px rgba(7, 5, 26, 0.07);
+}
+
+.footpathBoxw {
+  border-radius: 8px;
+  border: 1.5px solid #005C75;
+  background: #FFF;
+  box-shadow: 0px 4.993px 31.205px 0px rgba(7, 5, 26, 0.07);
+}
+
+.filesText {
+  color: #1A9988;
+  font-size: clamp(0.7rem, 2vw, 1.2rem);
+  font-family: Inter, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  padding-top: 5px;
+}
+
+.historyTitle {
+  color: var(--Greyscale-900, #212121);
+  font-family: Inter;
+  font-size: clamp(0.9rem, 2vw, 1.5rem);
+  font-style: normal;
+  font-weight: 500;
+  line-height: 160%;
+}
+
+.deleteBox {
+  width: clamp(2.5rem, 6vw, 3rem);
+  height: clamp(2.5rem, 6vw, 3rem);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.40);
+  backdrop-filter: blur(25px);
+  padding: 10px;
+}
+
+.deleteBox:hover {
+  cursor: pointer;
+}
+
+/* -------------------------------history-------------------------- */
+.placeTitle {
+  color: var(--Greyscale-900, #212121);
+  font-family: "Inter, sans-serif";
+  font-size: clamp(0.7rem, 3vw, 1.2rem);
+  font-style: normal;
+  font-weight: 400;
+  line-height: 160%;
+}
+
+.dateText {
+  color: var(--Greyscale-700, #616161);
+  font-family: "Inter";
+  font-size: clamp(0.6rem, 2vw, 1rem);
+  font-style: normal;
+  font-weight: 500;
+  line-height: 140%;
+  /* 16.8px */
+  letter-spacing: 0.2px;
+}
+
+.viewBtn{ 
+  background-color: #005C75 !important;
+  border: #005C75 1px solid !important;
+  
+}
+/* -----------------------------Map------------------------------ */
+
+.arrow-container {
+  width: 8vw;
+  height: 8vw;
+  max-width: 64px;
+  max-height: 64px;
+  min-width: 40px;
+  min-height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.40);
+  backdrop-filter: blur(25px);
+}
+
+.divBtn:hover {
+  cursor: pointer;
+}
+
+.selectedImage {
+  width: 100%;
+  max-width: 1200px;
+  max-height: 500px;
+}
+
+.locationBtn {
+  border: #005C75 1px solid !important;
+}
+
+.locationText {
+  color: #005C75;
+  font-size: clamp(0.9rem, 2vw, 1.5rem);
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+}
+
+.divider {
+  border: none;
+  border-top: 3px solid #AFAFAF;
+  width: 100%;
+}
+
+.or-text {
+  margin: 0;
+  white-space: nowrap;
+  color: #000;
+  font-family: "Inter";
+  font-size: clamp(1rem, 2vw, 2rem);
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%;
+  letter-spacing: -0.28px;
+}
+
+
+.submitBtn {
+  border: #005C75 1px solid !important;
+  background-color: #005C75 !important
+}
+
+.submitText {
+  font-size: clamp(0.9rem, 2vw, 1.5rem);
+}
+
+.submitIcon {
+  width: clamp(18px, 3vw, 32px) !important;
+  height: clamp(18px, 3vw, 32px) !important;
+  display: flex;
+  align-items: center;
+}
+
+
+
+
+/*---------------------------------PlaceDet--------------------------- */
+
+.selectedPlaceTitle {
+  color: #005C75;
+  font-family: Inter;
+  font-size: clamp(0.7rem, 2vw, 1.8rem);
+  font-style: normal;
+  font-weight: 500;
+  line-height: 160%;
+}
+
+.imginfoTitle {
+  font-family: "Inter";
+  font-size: clamp(0.7rem, 2vw, 1.5rem);
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  background: linear-gradient(94deg, #005C75 4.09%, #56A4B4 90.77%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.filenameTitle {
+  color: #000;
+  text-align: center;
+  font-family: "Inter";
+  font-size: clamp(0.7rem, 2vw, 1.2rem);
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.filenameText {
+  color: #000;
+  font-size: clamp(0.6rem, 2vw, 0.9rem);
+  letter-spacing: 0.5px;
+  
+}
+
+.editBox {
+  width: clamp(32px, 6vw, 50px);
+  height: clamp(32px, 6vw, 50px);
+  border-radius: 50%;
+  background: rgba(53, 51, 51, 0.087);
+  backdrop-filter: blur(25px);
+  padding: 10px;
+}
+
+.editBox:hover {
+  cursor: pointer;
+}
+
+.infoCard {
+  border-radius: 8px;
+  border: 1.5px solid #005C75;
+  box-shadow: 0px 4.993px 31.205px 0px rgba(7, 5, 26, 0.07);
+}
+
+.progressColors .progress-bar {
+  background: linear-gradient(to right, red, orange, yellow, green);
+}
+
+.yellowCard {
+  background-color: #F8F8CF !important;
+}
+
+.yellowCardTitle {
+  color: #844E1F;
+  font-size: clamp(0.7rem, 2vw, 1.5rem);
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.yellowCardText {
+  color: #000;
+  font-size: clamp(0.7rem, 2vw, 1rem);
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.violetCard {
+  background-color: #F6E7FF !important;
+}
+
+.violetCardTitle {
+  color: #7500AA;
+  font-size: clamp(0.7rem, 2vw, 1.5rem);
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.violetCardText {
+  color: #000;
+  font-size: clamp(0.6rem, 2vw, 1rem);
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+ /* -----------------------------------------------loader--------------------------- */
+.loader {
+  position: relative;
+  width: 70px;
+  height: 70px;
+}
+
+.ball {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
+.ball {
+  display: inline-block;
+  animation: rotate 3s linear infinite, bounce 3s ease-in-out infinite;
+  transform-origin: center;
+}
+
+
+
+/* ------------------------------------------Visualization------------------ */
+
+
+.legend-circle {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.legend-square {
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.responsive-locationIcon {
+  width: clamp(1rem, 2vw, 1.5rem); 
+  height: clamp(1rem, 2vw, 1.5rem); 
+}
+.cancelIconBox{
+  width: clamp(1.4rem, 6vw, 1.6rem);
+  height: clamp(1.4rem, 6vw, 1.5rem);
+  border-radius: 50%;
+  background: rgba(53, 51, 51, 0.087);
+  padding-left : 1px
+}
+.cancelIcon {
+  width: 1.5rem;
+}
+
+.info-text p {
+  font-size: clamp(0.9rem, 1.2vw, 1rem);
+}
+
+.small-card {
+  max-width: 250px; 
+  min-width: 200px; 
+  padding: clamp(0.5rem, 1vw, 1rem); 
+}
+
+.location-title {
+  font-size: clamp(0.6rem, 1.8vw, 0.8rem); 
+}
+
+.text-id,
+.text-score,
+.text-issues,
+.text-recommendation {
+  font-size: clamp(0.6rem, 1.5vw, 0.8rem)!important; 
+}
+
+
+.notes{
+  font-size: 0.7rem;
+  
+}
+
+/* --------------------------iModal------------------------------- */
+.iModalText{
+  font-family: 'Inter';
+}
+.captureBtn{
+  background-color: #005C75 !important;
+  border: #005C75 1px solid !important;
+}
+.cancelBtn{
+       background-color: #e84e86 !important;
+  border: #e84e86 1px solid !important;
+}
